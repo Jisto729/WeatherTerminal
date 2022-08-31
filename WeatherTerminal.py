@@ -36,7 +36,14 @@ def temp_info_meteoskop():
     return temp_info
 
 def temp_info_meteobox():
-    return 1
+    soup = get_html_soup_from_link("https://meteobox.cz/trebic/#poctable2h2")
+    temp_widgets = soup.select(".tpl")
+    temp_info = []
+    for i in range(2, 26):
+        #gets the temperature from a widget
+        #print(temp_widgets[i].get_text().split())
+        temp_info.append(int(round(float((temp_widgets[i].get_text().split())[0].replace(',','.')))))
+    return temp_info
 
 def temp_info_presne_pocasi():
     return 1
@@ -99,4 +106,6 @@ if __name__ == '__main__':
     print_temp_by_hour(temp_info_in_pocasi())
     print_middle(TABLE_WIDTH, "Meteoskop")
     print_temp_by_hour(temp_info_meteoskop())
+    print_middle(TABLE_WIDTH, "Meteobox")
+    print_temp_by_hour(temp_info_meteobox())
     print_horizontal_line(TABLE_WIDTH)
